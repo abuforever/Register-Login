@@ -15,6 +15,8 @@ function Register() {
     reset();
   };
 
+  console.log(errors.firstname);
+
   return (
     <div className="Register">
       <form onSubmit={handleSubmit(onSubmit)} className="register-form">
@@ -22,22 +24,34 @@ function Register() {
         <input
           {...register("firstname", {
             required: true,
-            maxLength: 15,
-            pattern: /^[A-Za-z]+$/i,
+            maxLength: 14, // Probeldan qutqarib chiqish uchun 14 qilib olamiz
+            pattern: /^[A-Za-z]+( [A-Za-z]+)*$/i, // Harflar ortasida probelni qo'shish uchun
           })}
           placeholder="Firstname"
         />
-        {errors.firstname && <p>Only letters allowed!</p>}
+        {errors.firstname && errors.firstname.type === "required" && (
+          <p>This field is required!</p>
+        )}
+        {errors.firstname && errors.firstname.type === "pattern" && (
+          <p>Only letters allowed!</p>
+        )}
+
 
         <input
           {...register("lastname", {
             required: true,
             maxLength: 15,
-            pattern: /^[A-Za-z]+$/i,
+            pattern: /^[A-Za-z]+( [A-Za-z]+)*$/i,
           })}
           placeholder="Lastname"
         />
-        {errors.lastname && <p>Only letters allowed!</p>}
+        {errors.lastname && errors.lastname.type === "required" && (
+          <p>This field is required!</p>
+        )}
+        {errors.lastname && errors.lastname.type === "pattern" && (
+          <p>Only letters allowed!</p>
+        )}
+
 
         <input
           {...register("email", {
@@ -46,7 +60,13 @@ function Register() {
           })}
           placeholder="Email"
         />
-        {errors.email && <p>Please enter a valid email format!</p>}
+        {errors.email && errors.email.type === "required" && (
+          <p>This field is required!</p>
+        )}
+        {errors.email && errors.email.type === "pattern" && (
+          <p>Please enter a valid email format!</p>
+        )}
+
 
         <input
           {...register("password", {
@@ -56,10 +76,14 @@ function Register() {
           type="password"
           placeholder="Password"
         />
-        {errors.password && (
+        {errors.password && errors.password.type === "required" && (
+          <p>This field is required!</p>
+        )}
+        {errors.password && errors.password.type === "minLength" && (
           <p>Password must be at least 6 characters long!</p>
         )}
-           <Link to={"/login"}>Log in</Link>
+
+        <Link to={"/login"}>Log in</Link>
         <input type="submit" value="Register" />
       </form>
     </div>

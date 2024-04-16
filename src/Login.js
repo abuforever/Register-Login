@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";  
+import { Link } from "react-router-dom";
 
 function Login() {
   const {
@@ -26,8 +26,12 @@ function Login() {
           })}
           placeholder="Email"
         />
-        {errors.email && <p>Please enter a valid email format!</p>}
-
+        {errors.email && errors.email.type === "required" && (
+          <p>This field is required!</p>
+        )}
+        {errors.email && errors.email.type === "pattern" && (
+          <p>Please enter a valid email format!</p>
+        )}
         <input
           {...register("password", {
             required: true,
@@ -36,10 +40,13 @@ function Login() {
           type="password"
           placeholder="Password"
         />
-        {errors.password && (
+        {errors.password && errors.password.type === "required" && (
+          <p>This field is required!</p>
+        )}
+        {errors.password && errors.password.type === "minLength" && (
           <p>Password must be at least 6 characters long!</p>
         )}
-           <Link to={"/"}>Register</Link>
+        <Link to={"/"}>Register</Link>
         <input type="submit" value="Login" />
       </form>
     </div>
